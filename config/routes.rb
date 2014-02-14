@@ -1,9 +1,27 @@
 BackchannelV1::Application.routes.draw do
+  get 'typical_user' => 'typical_user#index'
+  controller :session do
+    get 'login' => :new
+    post 'login' => :create
+    delete 'logout' => :destroy
+  end
+  
+  get "typical_user/index"
+  get "sessions/new"
+  get "sessions/create"
+  get "sessions/destroy"
+  resources :users
+
+  get "postpool/index"
+  resources :posts
+
+  resources :categories
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+    root 'postpool#index', as: 'postpool'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,0 +1,15 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<h1>List Of Posts</h1>
+
+<% @posts.each do |post| %>
+<div class="entry">
+	<h3><%= post.title %></h3>
+	<%= sanitize(post.body) %>
+	<div class="category_line">
+		<span class="category">Category: <%= post.category.name %></span>
+	</div>
+</div>
+<% end %>
