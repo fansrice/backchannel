@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authorize, only: :show
+  #before_action :set_post, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authorize, only: [:index, :show]
   # GET /posts
   # GET /posts.json
   def index
@@ -10,6 +10,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @post = Post.find(params[:id])
   end
 
   # GET /posts/new
@@ -20,6 +21,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    @post = Post.find(params[:id])
   end
 
   # POST /posts
@@ -55,11 +57,17 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    @post = Post.find(params[:id])
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url }
       format.json { head :no_content }
     end
+  end
+  
+  def get_author_name
+    @post = Post.find(params[:id])
+    @auther = User.all
   end
 
   private

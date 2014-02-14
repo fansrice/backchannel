@@ -12,12 +12,12 @@
 
 <p>
   <strong>Category:</strong>
-  <%= @post.category_id %>
+  <%= @post.category.name %>
 </p>
 
 <p>
-  <strong>Auther:</strong>
-  <%= @post.auther_id %>
+  <strong>Author:</strong>
+  <%= @auther.find_by_id(@post.auther_id) %>
 </p>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
