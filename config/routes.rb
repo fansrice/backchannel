@@ -1,6 +1,6 @@
 BackchannelV1::Application.routes.draw do
   get 'typical_user' => 'typical_user#index'
-  controller :session do
+  controller :sessions do
     get 'login' => :new
     post 'login' => :create
     delete 'logout' => :destroy
