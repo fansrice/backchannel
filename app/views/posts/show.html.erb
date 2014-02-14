@@ -17,7 +17,7 @@
 
 <p>
   <strong>Author:</strong>
-  <%= @auther.find_by_id(@post.auther_id) %>
+  <%= User.find_by_id(@post.auther_id).name %>
 </p>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |

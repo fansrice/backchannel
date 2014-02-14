@@ -67,7 +67,7 @@ class PostsController < ApplicationController
   
   def get_author_name
     @post = Post.find(params[:id])
-    @auther = User.all
+
   end
 
   private
