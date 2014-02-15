@@ -26,7 +26,12 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
-    if @post.auther_id != session[:user_id]
+    #if (User.find_by(id: session[:user_id]).admin_type != nil)      
+      #if(@post.auther_id != session[:user_id])
+      #flash[:notice] = "Cannot edit a post that you did not post."
+      #redirect_to(:controller => "posts", :action => "show")
+    if (@post.auther_id == session[:user_id])||(User.find_by(id: session[:user_id]).admin_type != nil) 
+    else 
       flash[:notice] = "Cannot edit a post that you did not post."
       redirect_to(:controller => "posts", :action => "show")
     end

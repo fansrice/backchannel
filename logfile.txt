@@ -5,3 +5,6 @@ Create the application named backchannel_v1.
 Generate scaffold Category name:string
 Generate scaffold Post title:string body:text user_id:integer category_id:integer
 Generate scaffold User name:string email:string password:digest
+
+2/14/2014
+Generate scaffold post

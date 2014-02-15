@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @user = User.find(params[:id])
   end
   
 
@@ -21,6 +22,11 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(params[:id])
+    if @user.id != session[:user_id]
+      flash[:notice] = "Cannot edit other users' file"
+      redirect_to(:controller => "users", :action => "show")
+    end
   end
 
   # POST /users
