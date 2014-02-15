@@ -11,6 +11,8 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     @post = Post.find(params[:id])
+    @post_comment = PostComment.new(:post => @post)
+    @post_comments = PostComment.find(:all, :conditions => { :post_id => params[:id] })
   end
 
   # GET /posts/new
@@ -22,6 +24,10 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
+    if @post.auther_id != session[:user_id]
+      flash[:notice] = "Cannot edit a post that you did not post."
+      redirect_to(:controller => "posts", :action => "show")
+    end
   end
 
   # POST /posts
@@ -65,10 +71,6 @@ class PostsController < ApplicationController
     end
   end
   
-  def get_author_name
-    @post = Post.find(params[:id])
-
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

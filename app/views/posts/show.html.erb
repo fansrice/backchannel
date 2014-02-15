@@ -22,3 +22,35 @@
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
+<hr />
+<%= form_for(@post_comment) do |f| %>
+  <% if @post_comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post_comment.errors.count, "error") %> prohibited this post_comment from being saved:</h2>
+
+      <ul>
+      <% @post_comment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+    <%= f.hidden_field :post_id %>
+    <%= f.hidden_field :commentor_id, :value => session[:user_id] %>
+	
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<% if @post_comments.each do |comment| %>
+<h2><%= User.find_by_id(comment.commentor_id).name %></h2><br />
+<p><%= comment.body %></p>
+<% end.empty? %>
+<h2>Currently no comment for this post</h2>
+<% end %>

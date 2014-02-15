@@ -1,4 +1,6 @@
 BackchannelV1::Application.routes.draw do
+  resources :post_comments
+
   get 'typical_user' => 'typical_user#index'
   controller :sessions do
     get 'login' => :new
