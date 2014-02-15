@@ -2,7 +2,17 @@
 
 <p>
   <strong>Title:</strong>
-  <%= @post.title %>
+  <%= @post.title %> | <%= pluralize(@post_votes.length, "vote") %>
+  <%= form_for(@post_vote) do |f| %>
+  <div class="field">
+    <%= f.hidden_field :post_id %>
+    <%= f.hidden_field :voter_id, :value => session[:user_id] %>
+	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
 </p>
 
 <p>

@@ -13,6 +13,8 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     @post_comment = PostComment.new(:post => @post)
     @post_comments = PostComment.find(:all, :conditions => { :post_id => params[:id] })
+    @post_vote = PostVote.new(:post => @post)
+    @post_votes = PostVote.find(:all, :conditions => { :post_id => params[:id]})
   end
 
   # GET /posts/new

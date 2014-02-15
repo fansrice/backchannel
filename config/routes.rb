@@ -1,4 +1,8 @@
 BackchannelV1::Application.routes.draw do
+  resources :post_votes
+
+  resources :comment_votes
+
   resources :post_comments
 
   get 'typical_user' => 'typical_user#index'

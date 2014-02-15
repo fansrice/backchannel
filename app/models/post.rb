@@ -4,4 +4,5 @@ class Post < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
   has_many :post_comments, :dependent => :destroy
+  has_many :post_votes, :dependent => :destroy
 end

@@ -1,5 +1,6 @@
 class PostCommentsController < ApplicationController
-  before_action :set_post_comment, only: [:show, :edit, :update, :destroy]
+  #before_action :set_post_comment, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authorize, only: :index
 
   # GET /post_comments
   # GET /post_comments.json
