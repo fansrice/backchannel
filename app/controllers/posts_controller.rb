@@ -20,7 +20,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
-    @category = Category.all
+    @categories = Category.all
   end
 
   # GET /posts/1/edit

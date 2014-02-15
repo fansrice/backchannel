@@ -12,8 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br>
+    
+	<%= f.label :name %><br>
     <%= f.text_field :name %>
+	<% if (User.find_by(id: session[:user_id]).admin_type == "A")||(User.find_by(id: session[:user_id]).admin_type == "S") %>
+	<%= f.hidden_field :status, :value => 'active' %>
+	<% else %>
+    <%= f.hidden_field :status, :value => "pending" %>
+	<% end %>
+
   </div>
   <div class="actions">
     <%= f.submit %>

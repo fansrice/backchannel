@@ -28,8 +28,13 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
+        if User.find_by(id: session[:user_id]) != nil
         format.html { redirect_to @category, notice: 'Category was successfully created.' }
         format.json { render action: 'show', status: :created, location: @category }
+      else
+        format.html { redirect_to @category, notice: 'Category was successfully proposed but will not be seen before approved by admin.' }
+        format.json { render action: 'show', status: :created, location: @category }
+      end
       else
         format.html { render action: 'new' }
         format.json { render json: @category.errors, status: :unprocessable_entity }
@@ -69,6 +74,6 @@ class CategoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def category_params
-      params.require(:category).permit(:name)
+      params.require(:category).permit(:name, :status)
     end
 end

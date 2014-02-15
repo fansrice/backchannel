@@ -20,10 +20,11 @@
     <%= f.text_area :body %>
   </div>
   <div class="field">
-    <%= f.select :category_id, Category.all.collect {|x| [x.name, x.id]}, {:include_blank => "Select Category"} %><br />
+  <%= f.select :category_id, @categories.where(:status => "active").collect {|x| [x.name, x.id]}, {:include_blank => "Select Category"} %><br />
   </div>
   <%= f.hidden_field :auther_id, :value => session[:user_id] %>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
