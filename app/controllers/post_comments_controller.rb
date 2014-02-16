@@ -44,7 +44,7 @@ class PostCommentsController < ApplicationController
       ;flash[:notice] = 'Comment was successfully created.'
       redirect_to(@post_comment.post)
     else
-      flash[:notice] = "Error creating post_comment: #(@post_comment.errors)"
+      flash[:notice] = "Your comment should contain something."
       redirect_to(@post_comment.post)
     end
   end
@@ -66,11 +66,10 @@ class PostCommentsController < ApplicationController
   # DELETE /post_comments/1
   # DELETE /post_comments/1.json
   def destroy
+    @post_comment = PostComment.find(params[:id])
     @post_comment.destroy
-    respond_to do |format|
-      format.html { redirect_to post_comments_url }
-      format.json { head :no_content }
-    end
+    flash[:notice] = "Comment is successfully deleted!"
+    redirect_to(@post_comment.post)
   end
 
   private

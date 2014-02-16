@@ -11,7 +11,40 @@
       </ul>
     </div>
   <% end %>
+  <% if (User.find_by(id: session[:user_id])!= nil) && (User.find_by(id: session[:user_id]).admin_type!= nil) %>
+  <fieldset>
+	  <legend>Create an admin user</legend>
+		  
+  <div class="field">
+    <%= f.label :name, 'Name' %><br>
+    <%= f.text_field :name, size: 40 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email, 'Email' %><br>
+    <%= f.text_field :email, size: 40 %>
+  </div>
   
+  <div class="field">
+    <%= f.label :password, 'Password' %><br>
+    <%= f.password_field :password, size: 40 %>
+  </div>
+  
+  <div>
+    <%= f.label :password_confirmation, 'Confirm' %><br>
+    <%= f.password_field :password_confirmation,size:40 %>
+  </div>
+  
+  <div>
+    <%= f.hidden_field :admin_type, :value => "A" %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit "Create an Admin" %>
+  </div>
+<% else %> 
+</fieldset>
+
   <fieldset>
 	  <legend>Enter User Details</legend>
 		  
@@ -36,9 +69,11 @@
   </div>
   
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Sign Up" %>
   </div>
  
 </fieldset>
+
+<% end %>
 <% end %>
 </div>

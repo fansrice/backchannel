@@ -25,15 +25,18 @@ class CommentVotesController < ApplicationController
   # POST /comment_votes.json
   def create
     @comment_vote = CommentVote.new(comment_vote_params)
-
-    respond_to do |format|
-      if @comment_vote.save
-        format.html { redirect_to @comment_vote, notice: 'Comment vote was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @comment_vote }
+    @comment_votes = CommentVote.where(:post_comment_id => @comment_vote.post_comment_id)
+    @post_comments = PostComment.all
+      if @comment_votes.find_by(voter_id: session[:user_id]) != nil
+        flash[:notice] = 'Cannot vote anymore!'
+        redirect_to(@comment_vote.post_comment.post)
+      elsif @post_comments.find_by(id: @comment_vote.post_comment_id).commentor_id == session[:user_id]
+        flash[:notice] = "Cannot vote the comment created by you!"
+        redirect_to(@comment_vote.post_comment.post)
       else
-        format.html { render action: 'new' }
-        format.json { render json: @comment_vote.errors, status: :unprocessable_entity }
-      end
+        @comment_vote.save
+        flash[:notice] = 'Successfully voted!'
+        redirect_to(@comment_vote.post_comment.post)
     end
   end
 

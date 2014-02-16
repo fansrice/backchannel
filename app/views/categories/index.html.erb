@@ -1,3 +1,4 @@
+<p id="notice"><%= notice %></p>
 <h1>Listing categories</h1>
 
 <% if User.find_by(id: session[:user_id]).admin_type == nil %>
@@ -57,9 +58,12 @@
     <% @categories.where(:status => "pending").each do |category| %>
       <tr>
         <td><%= category.name %></td>
-        <td><%= link_to 'Show', category %></td>
-      <td><%= link_to 'Edit', edit_category_path(category) %></td>
-      <td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+		<%= form_for(@category) do |f| %>
+		<%= f.hidden_field :name, :value => category.name %>
+		<%= f.hidden_field :status, :value => 'active' %>
+		<td><%= f.submit "Approve" %></td>
+		<% end %>
+      <td><%= button_to 'Overrule', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

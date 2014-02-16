@@ -58,9 +58,68 @@
   </div>
 <% end %>
 
+<% if !User.find_by(id: session[:user_id]) %>
+
 <% if @post_comments.each do |comment| %>
-<h2><%= User.find_by_id(comment.commentor_id).name %></h2><br />
+<% @comment_votes = CommentVote.find(:all, :conditions => { :post_comment_id => comment.id}) %>
+<h2><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></h2>
+ <% @comment_vote = CommentVote.new(:post_comment => comment) %>
+  <%= form_for(@comment_vote) do |f| %>
+  <div class="field">
+    <%= f.hidden_field :post_comment_id, :value => comment.id %>
+    <%= f.hidden_field :voter_id, :value => session[:user_id] %>
+	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
 <p><%= comment.body %></p>
 <% end.empty? %>
 <h2>Currently no comment for this post</h2>
+<% end %>
+
+<% elsif User.find_by(id: session[:user_id]).admin_type == nil %>
+
+<% if @post_comments.each do |comment| %>
+<% @comment_votes = CommentVote.find(:all, :conditions => { :post_comment_id => comment.id}) %>
+<h2><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></h2>
+<% if comment.commentor_id == session[:user_id] %>
+<h3><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></h3>
+<% end %>
+ <% @comment_vote = CommentVote.new(:post_comment => comment) %>
+  <%= form_for(@comment_vote) do |f| %>
+  <div class="field">
+    <%= f.hidden_field :post_comment_id, :value => comment.id %>
+    <%= f.hidden_field :voter_id, :value => session[:user_id] %>
+	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+<p><%= comment.body %></p>
+<% end.empty? %>
+<h2>Currently no comment for this post</h2>
+<% end %>
+
+<% else %>
+<% if @post_comments.each do |comment| %>
+<% @comment_votes = CommentVote.find(:all, :conditions => { :post_comment_id => comment.id}) %>
+<h2><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></h2><h3><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></h3>
+ <% @comment_vote = CommentVote.new(:post_comment => comment) %>
+  <%= form_for(@comment_vote) do |f| %>
+  <div class="field">
+    <%= f.hidden_field :post_comment_id, :value => comment.id %>
+    <%= f.hidden_field :voter_id, :value => session[:user_id] %>
+	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+<p><%= comment.body %></p>
+<% end.empty? %>
+<h2>Currently no comment for this post</h2>
+<% end %>
 <% end %>
