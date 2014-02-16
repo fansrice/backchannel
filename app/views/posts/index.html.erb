@@ -1,25 +1,17 @@
-<h1>Listing posts</h1>
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
 
-<table>
-    <% @posts.each do |post| %>
-      <tr class="<%= cycle('list_line_odd','list_line_even') %>">
-		  <td class='list_body'>
-			  <dl>
-				  <dt><%= post.title %>
-					  <dd><%= truncate(strip_tags(post.body),length:80) %></dd>
-					  </dl>
-				  </td>
-				  <td class="list_actions">
-        <%= link_to 'Read more', post %><br/>
-		<% if post.auther_id == session[:user_id] %>
-        <%= link_to 'Edit', edit_post_path(post) %><br/>
-        <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
-		<% end %>
-		</td>
-      </tr>
-    <% end %>
-</table>
+<h1>List Of Posts</h1>
 
-<br />
+<% @posts.each do |post| %>
+<div class="entry">
+	<h3><%= post.title %></h3>
+	<%= sanitize(post.body) %>
+	<div class="category_line">
+		<span class="category">Category: <%= post.category.name %></span>
+	</div>
+</div>
+<% end %>
 
-<%= link_to 'New Post', new_post_path %>
+

@@ -20,7 +20,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
-    @categories = Category.all
+    @categories = Category.where(:status => "active")
   end
 
   # GET /posts/1/edit

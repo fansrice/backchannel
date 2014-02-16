@@ -16,11 +16,11 @@
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :body %><br>
+    <%= f.label :content %><br>
     <%= f.text_area :body %>
   </div>
   <div class="field">
-  <%= f.select :category_id, @categories.where(:status => "active").collect {|x| [x.name, x.id]}, {:include_blank => "Select Category"} %><br />
+	<%= f.select(:category_id, Category.where(:status => "active").map {|p| [p.name,p.id]}, :prompt => "Select a Category") %><br />
   </div>
   <%= f.hidden_field :auther_id, :value => session[:user_id] %>
   <div class="actions">
