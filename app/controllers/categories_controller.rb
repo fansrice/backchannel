@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authorize, only: :show
 
   # GET /categories
   # GET /categories.json
@@ -28,7 +29,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.save
-        if User.find_by(id: session[:user_id]) != nil
+        if User.find_by(id: session[:user_id]).admin_type != nil
         format.html { redirect_to @category, notice: 'Category was successfully created.' }
         format.json { render action: 'show', status: :created, location: @category }
       else

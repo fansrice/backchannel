@@ -26,11 +26,17 @@ class PostVotesController < ApplicationController
   # POST /post_votes.json
   def create
     @post_vote = PostVote.new(post_vote_params)
-      if !PostVote.find_by(voter_id: session[:user_id])&&@post_vote.save
-        ;flash[:notice] = 'Successfully voted.'
+    @post_votes = PostVote.where(:post_id => @post_vote.post_id)
+    @posts = Post.all
+      if @post_votes.find_by(voter_id: session[:user_id]) != nil
+        flash[:notice] = 'Cannot vote anymore!'
+        redirect_to(@post_vote.post)
+      elsif @posts.find_by(id: @post_vote.post_id).auther_id == session[:user_id]
+        flash[:notice] = "Cannot vote the post created by you!"
         redirect_to(@post_vote.post)
       else
-        flash[:notice] = "Cannot vote anymore!"
+        @post_vote.save
+        flash[:notice] = 'Successfully voted!'
         redirect_to(@post_vote.post)
     end
   end
