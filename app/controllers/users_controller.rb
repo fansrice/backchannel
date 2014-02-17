@@ -62,9 +62,14 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
+    if @user.id != session[:user_id]
+      @user.destroy
+    else
+      @user.destroy
+      session[:user_id] = nil
+    end
     respond_to do |format|
-      format.html { redirect_to users_url, :notice => "An Error Occurred! #{@user.errors[:base].to_s}" }
+      format.html { redirect_to users_url, :notice => " #{@user.errors[:base].to_s}" }
       format.json { head :no_content }
     end
   end

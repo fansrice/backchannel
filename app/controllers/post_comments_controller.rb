@@ -11,6 +11,7 @@ class PostCommentsController < ApplicationController
   # GET /post_comments/1
   # GET /post_comments/1.json
   def show
+    @post_comment = PostComment.find(params[:id])
   end
 
   # GET /post_comments/new
@@ -20,6 +21,7 @@ class PostCommentsController < ApplicationController
 
   # GET /post_comments/1/edit
   def edit
+    @post_comment = PostComment.find(params[:id])
   end
 
   # POST /post_comments
@@ -52,9 +54,10 @@ class PostCommentsController < ApplicationController
   # PATCH/PUT /post_comments/1
   # PATCH/PUT /post_comments/1.json
   def update
+    @post_comment = PostComment.find(params[:id])
     respond_to do |format|
       if @post_comment.update(post_comment_params)
-        format.html { redirect_to @post_comment, notice: 'Post comment was successfully updated.' }
+        format.html { redirect_to @post_comment.post, notice: 'Post comment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

@@ -1,2 +1,22 @@
-<h1>TypicalUser#index</h1>
-<p>Find me in app/views/typical_user/index.html.erb</p>
+
+<h1>Welcome, <%= @user.name %>!</h1>
+<span sytle="color:green">You have made <%= pluralize(@post_counts.count, 'post') %> , <%= pluralize(@comment_counts.count, 'comment')%> and <%= pluralize(@postvotes.count+@commentvotes.count,'vote') %>.</span>
+
+<% @posts.each do |post| %>
+<div class="entry">
+	<h3><%= link_to post.title, post %></h3>
+	<h4><%= sanitize(post.body) %></h4>
+	<div class="category_line">
+		<p>
+		  <span style="color:darkolivegreen">Category:</span>
+		  <span style="color:black"><%= post.category.name %></span>
+		  |
+		  <span style="color:darkolivegreen">Author:</span>
+		  <span style="color:black"><%= User.find_by_id(post.auther_id).name %></span>
+		  |
+		  <span style="color:darkolivegreen">Posted on</span>
+		  <span style="color:black"><%= post.created_at.strftime("%b. %d, %Y %I:%M %p") %></span>
+		</p>
+	</div>
+</div>
+<% end %>

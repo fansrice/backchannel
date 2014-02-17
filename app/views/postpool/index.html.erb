@@ -1,11 +1,11 @@
-<h1>Listing posts</h1>
+<h2>Recent posts</h2>
 
 <table>
     <% @posts.each do |post| %>
       <tr class="<%= cycle('list_line_odd','list_line_even') %>">
 		  <td class='list_body'>
 			  <dl>
-				  <dt><%= post.title %>
+				  <dt><%= link_to post.title, post %><span style="color:green;margin-left:10px;font-family: Times"><%= pluralize(PostVote.where(:post_id => post.id).count,'vote') %></span></dt>
 					  <dd><%= truncate(strip_tags(post.body),length:80) %></dd>
 					  </dl>
 				  </td>

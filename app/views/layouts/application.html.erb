@@ -9,7 +9,7 @@
 <body class='<%= controller.controller_name %>'>
 	<div id="banner">
 		<%= image_tag "logo5.png"%>
-		<%= @page_title || "BackChannel App" %>
+		<%= @page_title || "BackChannel App" %><span style="color:aquablue">CSC/ECE517</span>
 	</div>
 	<div id="columns">
 		<div id="side">
@@ -20,17 +20,36 @@
 				<li><%= link_to "Log In", sessions_new_path %></li>
 				<li><%=	link_to "Sign up", users_new_path %></li>
 			</ul>
-			
+			<p>
+				<%= form_tag posts_path, :method =>'get' do %>
+				    <%= text_field_tag :search, params[:search], :size=>10  %>
+				    <%= select_tag :search_category, options_for_select(['Content','User','Category'].map{|o| [o.humanize,o]}) %>
+				    <%= submit_tag "Search", :name=>nil %>
+				<% end %>    
+			</p>  
 			<% if session[:user_id] %>
+			<% if User.find_by(id: session[:user_id]).admin_type == nil %>
 			<ul>
 				<li><%= link_to "New Post", new_post_path %></li>
 			    <li><%= link_to "My posts", postpool_path %></li>
 		    </ul>
 			<%= button_to 'Log Out', logout_path, method: :delete %>
+			<% else %>
+			<ul>
+				<li><%= link_to "New Post", new_post_path %></li>
+			    <li><%= link_to "My posts", typical_user_path %></li>
+				<li><%= link_to "Add categories", new_category_path %></li>
+				<li><%= link_to "User list", users_path %></li>
+				
+		    </ul>
+			<%= button_to 'Log Out', logout_path, method: :delete %>
 			<% end %>
+			<% end %>
+			
 		</div>
 		<div id="main">
 			<%= yield %>
+			
 		</div>
 	</div>
 </body>

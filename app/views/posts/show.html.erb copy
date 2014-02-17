@@ -1,32 +1,32 @@
 <p id="notice"><%= notice %></p>
-<div class= "entry">
-<span>
-  <h3><%= @post.title %> | <%= pluralize(@post_votes.length, "vote") %>
+<div id="frm">
+<p>
+  <h3><%= @post.title %> | <%= pluralize(@post_votes.length, "vote") %></h3>
   <%= form_for(@post_vote) do |f| %>
     <%= f.hidden_field :post_id, :value => @post.id %>
     <%= f.hidden_field :voter_id, :value => session[:user_id] %>
 	<%= f.hidden_field :quantity, :value => 1 %>	
     <%= f.submit "vote" %>
 <% end %>
-</h3>
-</span>
-<p>
-  <h4><%= @post.body %></h4>
 </p>
+</div>
+<p>
+  <%= @post.body %>
+</p>
+
 <p>
   <strong>Category:</strong>
-  <span style="color:green"><%= @post.category.name %></span>
-  |
-  <strong>Author:</strong>
-  <span style="color:green"><%= User.find_by_id(@post.auther_id).name %></span>
-  |
-  <strong>Posted at:</strong>
-  <span style="color:darkolivegreen"><%= @post.created_at.strftime("%b. %d, %Y %I:%M %p") %></span>
+  <%= @post.category.name %>
 </p>
-<h5><%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %></h5>
-<hr style="border: 1px dotted #D8D8D8;" />
 
+<p>
+  <strong>Author:</strong>
+  <%= User.find_by_id(@post.auther_id).name %>
+</p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
+<hr />
 <%= form_for(@post_comment) do |f| %>
   <% if @post_comment.errors.any? %>
     <div id="error_explanation">
@@ -41,8 +41,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :Content %><br>
-    <%= f.text_area :body, :cols => "40", :rows => "4"  %>
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
     <%= f.hidden_field :post_id %>
     <%= f.hidden_field :commentor_id, :value => session[:user_id] %>
 	
@@ -51,89 +51,69 @@
     <%= f.submit "Leave a comment" %>
   </div>
 <% end %>
-</div>
+
 <% if !User.find_by(id: session[:user_id]) %>
-<table>
-    <% if @post_comments.each do |comment| %>
-      <tr class="<%= cycle('list_line_odd','list_line_even') %>">
-		  <td class='list_body'>
-			  <dl>
+
+<% if @post_comments.each do |comment| %>
 <% @comment_votes = CommentVote.find(:all, :conditions => { :post_comment_id => comment.id}) %>
-<dt><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></dt>
+<h2><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></h2>
  <% @comment_vote = CommentVote.new(:post_comment => comment) %>
   <%= form_for(@comment_vote) do |f| %>
+  <div class="field">
     <%= f.hidden_field :post_comment_id, :value => comment.id %>
     <%= f.hidden_field :voter_id, :value => session[:user_id] %>
 	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
     <%= f.submit "vote" %>
+  </div>
 <% end %>
-<dd><%= comment.body %></dd>
-</dl>
-</tr>
+<p><%= comment.body %></p>
 <% end.empty? %>
-</table>
-<div class="entry">
 <h2>Currently no comment for this post</h2>
-</div>
 <% end %>
 
 <% elsif User.find_by(id: session[:user_id]).admin_type == nil %>
 
-<table>
-    <% if @post_comments.each do |comment| %>
-      <tr class="<%= cycle('list_line_odd','list_line_even') %>">
-		  <td class='list_body'>
-			  <dl>
+<% if @post_comments.each do |comment| %>
 <% @comment_votes = CommentVote.find(:all, :conditions => { :post_comment_id => comment.id}) %>
-<dt><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %>
+<h2><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></h2>
 <% if comment.commentor_id == session[:user_id] %>
-<%= link_to '::Edit', edit_post_comment_path(comment) %>
-<%= link_to '::Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></dt>
+<h3><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></h3>
 <% end %>
  <% @comment_vote = CommentVote.new(:post_comment => comment) %>
   <%= form_for(@comment_vote) do |f| %>
+  <div class="field">
     <%= f.hidden_field :post_comment_id, :value => comment.id %>
     <%= f.hidden_field :voter_id, :value => session[:user_id] %>
 	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
     <%= f.submit "vote" %>
+  </div>
 <% end %>
 <p><%= comment.body %></p>
-</dl>
-</tr>
 <% end.empty? %>
-</table>
-<div class="entry">
 <h2>Currently no comment for this post</h2>
-</div>
 <% end %>
 
 <% else %>
-<table>
-    <% if @post_comments.each do |comment| %>
-      <tr class="<%= cycle('list_line_odd','list_line_even') %>">
-		  <td class='list_body'>
-			  <dl>
+<% if @post_comments.each do |comment| %>
 <% @comment_votes = CommentVote.find(:all, :conditions => { :post_comment_id => comment.id}) %>
-<% if comment.commentor_id == session[:user_id] %>
-<dt><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %><%= link_to '::Edit', edit_post_comment_path(comment) %><%= link_to '::Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></dt>
-<% else %>
-<dt><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %><%= link_to '::Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></dt>
-<% end %>
-
+<h2><%= User.find_by_id(comment.commentor_id).name %>  |  <%= pluralize(@comment_votes.length, "vote") %></h2><h3><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></h3>
  <% @comment_vote = CommentVote.new(:post_comment => comment) %>
   <%= form_for(@comment_vote) do |f| %>
+  <div class="field">
     <%= f.hidden_field :post_comment_id, :value => comment.id %>
     <%= f.hidden_field :voter_id, :value => session[:user_id] %>
 	<%= f.hidden_field :quantity, :value => 1 %>	
+  </div>
+  <div class="actions">
     <%= f.submit "vote" %>
+  </div>
 <% end %>
-<dd><%= comment.body %></dd>
-</dl>
-</tr>
+<p><%= comment.body %></p>
 <% end.empty? %>
-</table>
-<div class="entry">
 <h2>Currently no comment for this post</h2>
-</div>
 <% end %>
 <% end %>

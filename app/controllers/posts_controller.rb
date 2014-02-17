@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.ranked.search(params[:search],params[:search_category])
   end
 
   # GET /posts/1
@@ -30,9 +30,9 @@ class PostsController < ApplicationController
       #if(@post.auther_id != session[:user_id])
       #flash[:notice] = "Cannot edit a post that you did not post."
       #redirect_to(:controller => "posts", :action => "show")
-    if (@post.auther_id == session[:user_id])||(User.find_by(id: session[:user_id]).admin_type != nil) 
+    if (@post.auther_id == session[:user_id]) 
     else 
-      flash[:notice] = "Cannot edit a post that you did not post."
+      flash[:notice] = "Cannot edit other user's post!"
       redirect_to(:controller => "posts", :action => "show")
     end
   end
@@ -56,6 +56,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
+    @post = Post.find(params[:id])
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
@@ -71,6 +72,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1.json
   def destroy
     @post = Post.find(params[:id])
+    PostComment.destroy_all(:post_id => @post.id)
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url }

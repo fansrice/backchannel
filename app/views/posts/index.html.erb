@@ -2,14 +2,23 @@
 <p id="notice"><%= notice %></p>
 <% end %>
 
-<h1>List Of Posts</h1>
+<h1>List Of Posts(Popularity descent)</h1>
 
 <% @posts.each do |post| %>
 <div class="entry">
-	<h3><%= post.title %></h3>
-	<%= sanitize(post.body) %>
+	<h3><%= link_to post.title, post %></h3>
+	<h4><%= sanitize(post.body) %></h4>
 	<div class="category_line">
-		<span class="category">Category: <%= post.category.name %></span>
+		<p>
+		  <span style="color:darkolivegreen">Category:</span>
+		  <span style="color:black"><%= post.category.name %></span>
+		  |
+		  <span style="color:darkolivegreen">Author:</span>
+		  <span style="color:black"><%= User.find_by_id(post.auther_id).name %></span>
+		  |
+		  <span style="color:darkolivegreen">Posted on</span>
+		  <span style="color:black"><%= post.created_at.strftime("%b. %d, %Y %I:%M %p") %></span>
+		</p>
 	</div>
 </div>
 <% end %>

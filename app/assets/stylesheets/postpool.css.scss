@@ -20,13 +20,18 @@
 			margin:0;
 		}
 		dt{
-			color: #244;
+			color: #141;
 			font-weight: bold;
 			font-size: larger;
 		}
 		
 		dd{
-			margin: 0;
+			font-size: 15px;
+			margin-left: 15px;
+			padding-top: 5px;
+			margin-bottom: 3px;
+			font-family: Times;
+			color: #227;
 		}
 	}
 	
@@ -42,5 +47,7 @@
 	
 	.list_line_odd{
 		background: #66CCCC;
+		
 	}
+	
 }

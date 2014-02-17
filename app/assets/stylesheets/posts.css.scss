@@ -8,13 +8,16 @@
 		padding-bottom: 0.5em;
 		font: 150% sans-serif;
 		color: #226;
-		border-bottom: 3px dotted #77d;
+		border-bottom: 2px dotted #77d;
 	}
+	
 	.entry{
 		overflow: auto;
 		margin-top: 1em;
 		border-bottom: 1px dotted #77d;
+		border-left: 8px solid #33CCCC;
 		min-height: 100px;
+		margin-bottom:3px;
 		
 		img {
 			width:80px;
@@ -23,18 +26,41 @@
 		}
 		
 		h3{
-			font-size: 120%;
+			font-size: 150%;
 			font-family: sans-serif;
 			margin-left: 1px;
 			margin-top: 0;
 			margin-bottom: 2px;
+			color: #000;
+		}
+		h2
+		{
+		text-align: center;
+		text-transform: uppercase;
+		color: #A7C942;
+		}
+		h4{
+			font-family: Times;
+			margin-left: 15px;
+			margin-top: 3;
+			margin-bottom: 2px;
 			color: #227;
+			font-size: 16px;
+		}
+		h5{
+			font-family: Times;
+			margin-right: 1px;
+			margin-top: 0px;
+			margin-bottom: 1px;
+			color: #000;
+			text-align: right;
 		}
 		
 		p, div.category_line{
-			margin-left: 1px;
-			margin-top: 0.5em;
-			margin-bottom: 0.8em;
+			margin-right: 1px;
+			margin-top: 20px;
+			margin-bottom: 3px;
+			text-align: right;
 		}
 		
 		.category{
@@ -42,6 +68,22 @@
 			font-weight: bold;
 			margin-right: 3em;
 		}
+		background: #f0f0f0;
+	}
+	
+	.list_actions{
+		font-size: x-small;
+		text-align: right;
+		padding-left: 1em;
+	}
+	
+	.list_line_even{
+		background: #C8C8C8;
+	}
+	
+	.list_line_odd{
+		background: #D8D8D8;
+		
 	}
 	
 }
